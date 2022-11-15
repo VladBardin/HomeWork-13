@@ -4,13 +4,13 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.jsoup.Jsoup;
 
-import java.io.*;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.ArrayList;
 import java.util.List;
 
 public class TaskTwo {
@@ -25,34 +25,22 @@ public class TaskTwo {
                 .getType();
         List<User> user = new Gson().fromJson(response, type);
         final int[] a = {0};
-        List<User> list = new ArrayList<>();
-        for (User item: user) {
-            if (item.getId()>a[0]) {
+        for (User item : user) {
+            if (item.getId() > a[0]) {
                 a[0] = item.getId();
             }
-            if (item.getId() == a[0]) {
-                list.add(item);
-            }
         }
-        System.out.println("---->Task two<----");
-        for (int n = 46; n <= 50; n++) {
-            String urlComments = "https://jsonplaceholder.typicode.com/posts/10/comments/?id=" + n;
-            HttpRequest request6Comments = HttpRequest.newBuilder().uri(URI.create(urlComments))
-                    .build();
-            HttpClient client6Comments = HttpClient.newBuilder()
-                    .version(HttpClient.Version.HTTP_1_1)
-                    .build();
-            HttpResponse<String> response6Comments = client6Comments.send(request6Comments, HttpResponse.BodyHandlers.ofString());
-            System.out.println("StatusCode() = " + response6Comments.statusCode());
-            System.out.println("Body() = " + response6Comments.body());
-            String[] arr = response6Comments.body().split("\n");
-            String comment = arr[4] + "\n" + arr[6];
-            try (FileWriter file = new FileWriter("user-" + n + "-post-" + "10-comments.json")) {
-                file.write(comment);
-                file.flush();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        String urlComments = "https://jsonplaceholder.typicode.com/posts/" + a[0] + "/comments/";
+        HttpRequest requestComments = HttpRequest.newBuilder().uri(URI.create(urlComments)).build();
+        HttpClient clientComments = HttpClient.newBuilder().version(HttpClient.Version.HTTP_1_1).build();
+        HttpResponse<String> responseComments = clientComments.send(requestComments, HttpResponse.BodyHandlers.ofString());
+        String comments = responseComments.body();
+        try (FileWriter fw = new FileWriter("user-1-post-" + a[0] + "-comments.json")) {
+            fw.write(comments);
+            fw.flush();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
