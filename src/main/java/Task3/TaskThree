@@ -11,16 +11,15 @@ import java.util.stream.Collectors;
 
 public class TaskThree {
     public static void main(String[] args) throws IOException, InterruptedException {
-        System.out.println("---->Task Three<----");
         String urlCompleted = "https://jsonplaceholder.typicode.com/users/1/todos?completed=false";
         String response = Jsoup.connect(urlCompleted)
                 .ignoreContentType(true)
                 .get()
                 .body()
                 .text();
-        Type type = TypeToken.getParameterized(List.class, Users.class)
+        Type type = TypeToken.getParameterized(List.class, UserTask.class)
                 .getType();
-        List<Users> user = new Gson().fromJson(response, type);
+        List<UserTask> user = new Gson().fromJson(response, type);
         String completed = "false";
         user = user.stream().filter(item -> completed.equals(item.getCompleted()))
                 .collect(Collectors.toList());
