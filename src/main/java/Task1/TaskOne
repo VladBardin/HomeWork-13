@@ -1,0 +1,119 @@
+package Task1;
+
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+
+public class TaskOne {
+    public static void main(String[] args) throws IOException, InterruptedException {
+        String url = "https://jsonplaceholder.typicode.com/users";
+        TaskOne test = new TaskOne();
+        test.createObject(url);
+        test.updateObject();
+        test.deleteObject();
+        test.getInfoAllUsers();
+        test.getInfoOneUser();
+        test.getInfoByUsername();
+    }
+    public String user = "{\n" +
+                         "  \"name\": \"Kurtis1 Weissnat111\",\n" +
+                         "  \"username\": \"Elwyn.Skiles1\",\n" +
+                         "  \"email\": \"Telly1.Hoeger@billy.biz\",\n" +
+                         "  \"address\": {\n" +
+                         "    \"street\": \"Rex Trail\",\n" +
+                         "    \"suite\": \"Suite 280\",\n" +
+                         "    \"city\": \"Howemouth\",\n" +
+                         "    \"zipcode\": \"58804-1099\",\n" +
+                         "    \"geo\": {\n" +
+                         "      \"lat\": \"24.8918\",\n" +
+                         "      \"lng\": \"21.8984\"\n" +
+                         "    }\n" +
+                         "  },\n" +
+                         "  \"phone\": \"210.067.6132\",\n" +
+                         "  \"website\": \"elvis.io\",\n" +
+                         "  \"company\": {\n" +
+                         "    \"name\": \"Johns Group\",\n" +
+                         "    \"catchPhrase\": \"Configurable multimedia task-force\",\n" +
+                         "    \"bs\": \"generate enterprise e-tailers\"\n" +
+                         "  }\n" +
+                         "}";
+    public void createObject(String url) throws IOException, InterruptedException {
+        System.out.println("---->Create a new object<----");
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url))
+                .POST(HttpRequest.BodyPublishers.ofString(user))
+                .build();
+        HttpClient client = HttpClient.newBuilder()
+                .version(HttpClient.Version.HTTP_1_1)
+                .build();
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println("response.statusCode() = " + response.statusCode());
+        System.out.println("response.body() = " + response.body());
+    }
+    public void updateObject() throws IOException, InterruptedException {
+        System.out.println("---->Update the object<----");
+        String urlUpd = "https://jsonplaceholder.typicode.com/users/1";
+        HttpRequest request1 = HttpRequest.newBuilder().uri(URI.create(urlUpd))
+                .header("Content-Type", "application/json")
+                .PUT(HttpRequest.BodyPublishers.ofString(user))
+                .build();
+        HttpClient client1 = HttpClient.newBuilder()
+                .version(HttpClient.Version.HTTP_1_1)
+                .build();
+        HttpResponse<String> response1 = client1.send(request1, HttpResponse.BodyHandlers.ofString());
+        System.out.println("response1.statusCode() = " + response1.statusCode());
+        System.out.println("response1.body() = " + response1.body());
+    }
+    public void deleteObject() throws IOException, InterruptedException {
+        System.out.println("---->Delete<----");
+        String urlDel = "https://jsonplaceholder.typicode.com/users/9";
+        HttpRequest request2 = HttpRequest.newBuilder()
+                .uri(URI.create(urlDel))
+                .DELETE()
+                .build();
+        HttpClient client2 = HttpClient.newBuilder()
+                .version(HttpClient.Version.HTTP_1_1)
+                .build();
+        HttpResponse<String> response2 = client2.send(request2, HttpResponse.BodyHandlers.ofString());
+        System.out.println("response2.statusCode() = " + response2.statusCode());
+        System.out.println("response2.body() = " + response2.body());
+    }
+    public void getInfoAllUsers() throws IOException, InterruptedException {
+        System.out.println("---->Get info about all users<----");
+        String urlInfo = "https://jsonplaceholder.typicode.com/users";
+        HttpRequest request3 = HttpRequest.newBuilder().uri(URI.create(urlInfo))
+                .build();
+        HttpClient client3 = HttpClient.newBuilder()
+                .version(HttpClient.Version.HTTP_1_1)
+                .build();
+        HttpResponse<String> response3 = client3.send(request3, HttpResponse.BodyHandlers.ofString());
+        System.out.println("response3.statusCode() = " + response3.statusCode());
+        System.out.println("response3.body() = " + response3.body());
+    }
+    public void getInfoOneUser() throws IOException, InterruptedException {
+        System.out.println("---->Get info about one user<----");
+        String urlUser = "https://jsonplaceholder.typicode.com/users/10";
+        HttpRequest request4 = HttpRequest.newBuilder().uri(URI.create(urlUser))
+                .build();
+        HttpClient client4 = HttpClient.newBuilder()
+                .version(HttpClient.Version.HTTP_1_1)
+                .build();
+        HttpResponse<String> response4 = client4.send(request4, HttpResponse.BodyHandlers.ofString());
+        System.out.println("response4.statusCode() = " + response4.statusCode());
+        System.out.println("response4.body() = " + response4.body());
+    }
+    public void getInfoByUsername() throws IOException, InterruptedException {
+        System.out.println("---->Get info by username<----");
+        String urlUsername = "https://jsonplaceholder.typicode.com/users?username=Leopoldo_Corkery";
+        HttpRequest request5 = HttpRequest.newBuilder().uri(URI.create(urlUsername))
+                .build();
+        HttpClient client5 = HttpClient.newBuilder()
+                .version(HttpClient.Version.HTTP_1_1)
+                .build();
+        HttpResponse<String> response5 = client5.send(request5, HttpResponse.BodyHandlers.ofString());
+        System.out.println("response5.statusCode() = " + response5.statusCode());
+        System.out.println("response5.body() = " + response5.body());
+    }
+}
