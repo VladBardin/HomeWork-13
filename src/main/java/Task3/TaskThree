@@ -20,8 +20,7 @@ public class TaskThree {
         Type type = TypeToken.getParameterized(List.class, UserTask.class)
                 .getType();
         List<UserTask> user = new Gson().fromJson(response, type);
-        String completed = "false";
-        user = user.stream().filter(item -> completed.equals(item.getCompleted()))
+        user = user.stream().filter(item -> "false".equals(item.getCompleted()))
                 .collect(Collectors.toList());
         System.out.println(user);
     }
